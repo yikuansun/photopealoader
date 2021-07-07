@@ -27,6 +27,12 @@ function setMenu() {
         { role: 'paste' },
         { role: 'selectall' }
       ]
+    },
+    {
+      label: 'Developer',
+      submenu: [
+        { role: 'toggleDevTools' }
+      ]
     }
   ];
 
