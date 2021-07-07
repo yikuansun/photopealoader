@@ -1,5 +1,12 @@
 const { app, BrowserWindow, nativeTheme, Menu, shell } = require('electron');
 const path = require('path');
+const admZip = require('adm-zip');
+
+function getUserData() {
+  var zip = new admZip();
+  zip.addLocalFolder(__dirname + '/defaultfs');
+  zip.extractAllTo(app.getPath('documents') + '/Photopea files', false)
+}
 
 function createWindow () {
   const mainWindow = new BrowserWindow({
@@ -60,6 +67,7 @@ function setMenu() {
 }
 
 app.whenReady().then(() => {
+  getUserData();
   createWindow();
   setMenu();
 });
