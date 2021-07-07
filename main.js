@@ -1,5 +1,4 @@
 const { app, BrowserWindow, nativeTheme, Menu, shell } = require('electron');
-const path = require('path');
 const fs = require('fs');
 const admZip = require('adm-zip');
 
