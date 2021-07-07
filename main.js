@@ -5,7 +5,7 @@ const admZip = require('adm-zip');
 function getUserData() {
   var zip = new admZip();
   zip.addLocalFolder(__dirname + '/defaultfs');
-  zip.extractAllTo(app.getPath('documents') + '/Photopea files', false)
+  zip.extractAllTo(app.getPath('documents') + '/Photopea files', false);
 }
 
 function createWindow () {
