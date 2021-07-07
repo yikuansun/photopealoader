@@ -1,8 +1,8 @@
-var request = new XMLHttpRequest();
-request.open("GET", "https://raw.githubusercontent.com/yikuansun/photopeaenvironment/master/environment.json", false);
-request.send();
-options = request.responseText;
+const { remote } = require("electron");
+const { getGlobal } = remote;
 
-Photopea.initEmbed(document.querySelector("div"), options).then(function(data) {
+options = getGlobal("options");
+
+Photopea.initEmbed(document.querySelector("div"), JSON.stringify(options)).then(function(data) {
     document.querySelector("#loadingscreen").remove();
 });

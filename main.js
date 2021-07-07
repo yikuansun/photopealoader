@@ -1,11 +1,15 @@
 const { app, BrowserWindow, nativeTheme, Menu, shell } = require('electron');
 const path = require('path');
+const fs = require('fs');
 const admZip = require('adm-zip');
 
 function getUserData() {
   var zip = new admZip();
   zip.addLocalFolder(__dirname + '/defaultfs');
   zip.extractAllTo(app.getPath('documents') + '/Photopea files', false);
+
+  var jsonconfig = fs.readFileSync(`${app.getPath('documents')}/Photopea files/config.json`, 'utf-8');
+  global.options = JSON.parse(jsonconfig);
 }
 
 function createWindow () {
@@ -14,7 +18,8 @@ function createWindow () {
     height: 900,
     webPreferences: {
       nodeIntegration: true,
-      contextIsolation: false
+      contextIsolation: false,
+      enableRemoteModule: true
     }
   });
 
