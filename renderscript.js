@@ -3,6 +3,6 @@ request.open("GET", "https://raw.githubusercontent.com/yikuansun/photopeaenviron
 request.send();
 options = request.responseText;
 
-setTimeout(function() { document.querySelector("#loadingscreen").remove(); }, 5000);
-
-Photopea.initEmbed(document.querySelector("div"), options).then();
+Photopea.initEmbed(document.querySelector("div"), options).then(function(data) {
+    document.querySelector("#loadingscreen").remove();
+});
