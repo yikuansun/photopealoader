@@ -9,6 +9,12 @@ function getUserData() {
 
   var jsonconfig = fs.readFileSync(`${app.getPath('documents')}/Photopea files/config.json`, 'utf-8');
   global.options = JSON.parse(jsonconfig);
+
+  global.resources = [];
+  for (var resource of fs.readdirSync(`${app.getPath('documents')}/Photopea files/Resources`)) {
+    var fileext = resource.split('.').pop();
+    if (!(['md', 'DS_Store'].includes(fileext))) global.resources.push(fs.readFileSync(`${app.getPath('documents')}/Photopea files/Resources/${resource}`).buffer);
+  }
 }
 
 function createWindow () {
