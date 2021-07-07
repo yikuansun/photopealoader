@@ -28,7 +28,7 @@ function getUserData() {
     }
   }
 
-  if (process.argv.length > 2) {
+  if (process.argv.length >= 2) {
     var filePath = process.argv[1];
     global.openedFile = fs.readFileSync(filePath).buffer;
   }
