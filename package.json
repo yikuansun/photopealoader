@@ -1,5 +1,6 @@
 {
-  "name": "photopea",
+  "name": "photopealoader",
+  "productName": "Photopea",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
