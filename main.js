@@ -46,7 +46,7 @@ function createWindow () {
   });
 
   mainWindow.setMenuBarVisibility(false);
-  mainWindow.loadFile('index.html');
+  mainWindow.loadFile('window/index.html');
   mainWindow.maximize();
   mainWindow.webContents.on('new-window', function(e, url) {
     e.preventDefault();
