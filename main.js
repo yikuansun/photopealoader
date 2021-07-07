@@ -14,33 +14,43 @@ function createWindow () {
   mainWindow.loadFile('index.html');
   mainWindow.maximize();
   nativeTheme.themeSource = 'dark';
-  Menu.setApplicationMenu(Menu.buildFromTemplate([{
-    label: app.name,
-    submenu: [
-      { label: 'About Photopea', click() { shell.openExternal("https://github.com/photopea/photopea/blob/master/README.md#photopeacom") } },
-      { type: 'separator' },
-      { role: 'hide' },
-      { role: 'hideothers' },
-      { role: 'unhide' },
-      { type: 'separator' },
-      { role: 'quit' },
-      {
-        label: 'Keyboard Shortcuts',
-        submenu: [
-          { type: 'separator' },
-          { role: 'cut' },
-          { role: 'copy' },
-          { role: 'paste' },
-          { role: 'selectall' }
-        ]
-      }
-    ]
-  }]));
+}
 
+function setMenu() {
+  var template = [
+    {
+      label: 'Keyboard Shortcuts',
+      submenu: [
+        { type: 'separator' },
+        { role: 'cut' },
+        { role: 'copy' },
+        { role: 'paste' },
+        { role: 'selectall' }
+      ]
+    }
+  ];
+
+  if (process.platform == "darwin") {
+    template.unshift({
+      label: app.name,
+      submenu: [
+        { label: 'About Photopea', click() { shell.openExternal("https://github.com/photopea/photopea/blob/master/README.md#photopeacom") } },
+        { type: 'separator' },
+        { role: 'hide' },
+        { role: 'hideothers' },
+        { role: 'unhide' },
+        { type: 'separator' },
+        { role: 'quit' }
+      ]
+    });
+  }
+
+  Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 }
 
 app.whenReady().then(() => {
   createWindow();
+  setMenu();
 });
 
 app.on('window-all-closed', function () { app.quit() });
