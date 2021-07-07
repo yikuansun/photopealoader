@@ -15,6 +15,14 @@ function getUserData() {
     var fileext = resource.split('.').pop();
     if (!(['md', 'DS_Store'].includes(fileext))) global.resources.push(fs.readFileSync(`${app.getPath('documents')}/Photopea files/Resources/${resource}`).buffer);
   }
+
+  global.plugins = [];
+  for (var file of fs.readdirSync(`${app.getPath('documents')}/Photopea files/Plugins`)) {
+    var fileext = file.split('.').pop();
+    if (fileext.toLowerCase() == "json") {
+      global.plugins.push(JSON.parse(fs.readFileSync(`${app.getPath('documents')}/Photopea files/Plugins/${file}`, 'utf-8')));
+    }
+  }
 }
 
 function createWindow () {
