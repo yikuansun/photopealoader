@@ -13,4 +13,5 @@ else {
 Photopea.initEmbed(document.querySelector("div"), JSON.stringify(options)).then(function(frame) {
     document.querySelector("#loadingscreen").remove();
     for (var resource of getGlobal("resources")) Photopea.addBinaryAsset(frame.contentWindow, resource).then();
+    if (getGlobal("openedFile")) Photopea.addBinaryAsset(frame.contentWindow, getGlobal("openedFile")).then();
 });

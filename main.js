@@ -2,6 +2,10 @@ const { app, BrowserWindow, nativeTheme, Menu, shell } = require('electron');
 const fs = require('fs');
 const admZip = require('adm-zip');
 
+app.on('open-file', function(event, filePath) {
+  global.openedFile = fs.readFileSync(filePath).buffer;
+});
+
 function getUserData() {
   var zip = new admZip();
   zip.addLocalFolder(__dirname + '/defaultfs');
@@ -22,6 +26,11 @@ function getUserData() {
     if (fileext.toLowerCase() == "json") {
       global.plugins.push(JSON.parse(fs.readFileSync(`${app.getPath('documents')}/Photopea files/Plugins/${file}`, 'utf-8')));
     }
+  }
+
+  if (process.argv.length > 2) {
+    var filePath = process.argv[1];
+    global.openedFile = fs.readFileSync(filePath).buffer;
   }
 }
 
