@@ -17,7 +17,7 @@ function createWindow () {
   Menu.setApplicationMenu(Menu.buildFromTemplate([{
     label: app.name,
     submenu: [
-      { label: 'About photopea', click() { shell.openExternal("https://github.com/photopea/photopea/blob/master/README.md#photopeacom") } },
+      { label: 'About Photopea', click() { shell.openExternal("https://github.com/photopea/photopea/blob/master/README.md#photopeacom") } },
       { type: 'separator' },
       { role: 'hide' },
       { role: 'hideothers' },
