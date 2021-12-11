@@ -13,7 +13,6 @@
     "electron-packager": "^15.2.0"
   },
   "dependencies": {
-    "adm-zip": "^0.5.5",
-    "frameless-titlebar": "^2.1.4"
+    "adm-zip": "^0.5.5"
   }
 }
