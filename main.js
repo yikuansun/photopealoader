@@ -30,7 +30,10 @@ function getUserData() {
 
   if (process.argv.length >= 2) {
     var filePath = process.argv[1];
-    global.openedFile = fs.readFileSync(filePath).buffer;
+    fs.readFile(filePath, null, function(err, data) {
+      console.log(err)
+      global.openedFile = data.buffer;
+    });
   }
 }
 
