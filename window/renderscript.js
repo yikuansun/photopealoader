@@ -10,7 +10,11 @@ var titlebar = new customTitlebar.Titlebar({
 var options = getGlobal("options");
 
 if (options.environment) {
-    if (options.environment.theme != null) titlebar.updateBackground(customTitlebar.Color.fromHex(["#e0e0e0", "#474747", "#404550", "#f7f7f7", "#4b3e51", "#353535"][options.environment.theme]));
+    if (options.environment.theme != null) {
+        var themecolor = ["#e0e0e0", "#474747", "#404550", "#f7f7f7", "#4b3e51", "#353535"][options.environment.theme];
+        titlebar.updateBackground(customTitlebar.Color.fromHex(themecolor));
+        document.querySelector("#loadingscreen").style.backgroundColor = themecolor;
+    }
 }
 
 if (options.environment) options.environment.plugins = getGlobal("plugins");
