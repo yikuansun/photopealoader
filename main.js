@@ -41,6 +41,8 @@ function createWindow () {
   const mainWindow = new BrowserWindow({
     width: 1200,
     height: 900,
+    titleBarStyle: "hidden",
+    frame: process.platform == "darwin",
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
