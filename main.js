@@ -32,7 +32,7 @@ function getUserData() {
     var filePath = process.argv[1];
     fs.readFile(filePath, null, function(err, data) {
       console.log(err)
-      global.openedFile = data.buffer;
+      if (data) global.openedFile = data.buffer;
     });
   }
 }
