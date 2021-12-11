@@ -1,0 +1,1 @@
+Fill this folder with your resources (gradients, brushes, fonts etc.) and these will be automatically loaded into Photopea.

@@ -1,0 +1,1 @@
+Fill this folder with your plugins and they will be loaded into Photopea.
