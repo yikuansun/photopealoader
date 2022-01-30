@@ -1,10 +1,15 @@
 const { remote } = require("electron");
-const { getGlobal } = remote;
+const { getGlobal, BrowserWindow } = remote;
 const customTitlebar = require("custom-electron-titlebar");
 
 var titlebar = new customTitlebar.Titlebar({
 	backgroundColor: customTitlebar.Color.fromHex("#474747"),
-    menu: null
+    menu: null,
+    onMinimize: function() { BrowserWindow.getFocusedWindow().minimize(); },
+    onMaximize: function() { BrowserWindow.getFocusedWindow().isMaximized()?BrowserWindow.getFocusedWindow().unmaximize():BrowserWindow.getFocusedWindow().maximize(); },
+    onClose: function() { BrowserWindow.getFocusedWindow().close() },
+    isMaximized: function() { return BrowserWindow.getFocusedWindow().isMaximized() },
+    onMenuItemClick: function() { console.log("nothing"); }
 });
 
 var options = getGlobal("options");
