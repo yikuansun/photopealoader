@@ -1,4 +1,4 @@
-const { app, BrowserWindow, nativeTheme, Menu, shell } = require('electron');
+const { app, BrowserWindow, nativeTheme, Menu, shell, dialog } = require('electron');
 const fs = require('fs');
 const admZip = require('adm-zip');
 const ipcMain = require('electron').ipcMain;
@@ -141,7 +141,13 @@ ipcMain.handle('customTBar', function (event, command) {
       window.isMaximized() ? window.unmaximize() : window.maximize();
       break;
     case 'close':
-      BrowserWindow.fromWebContents(event.sender).close();
+      var choice = dialog.showMessageBoxSync(BrowserWindow.getFocusedWindow(), {
+        type: "question",
+        buttons: ["Yes", "No"],
+        title: "Exit?",
+        message: "Unsaved work will be lost."
+      });
+      if (choice == 0) app.exit();
       break;
     case 'is-maximized':
       return BrowserWindow.fromWebContents(event.sender).isMaximized()
