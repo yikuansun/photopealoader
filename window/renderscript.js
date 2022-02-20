@@ -1,5 +1,13 @@
-window.ppapi.getGlobal('resources', 'openedFile', 'options').then(function (vars) {
-    let { resources, openedFile, options } = vars;
+window.ppapi.getGlobal('resources', 'openedFile', 'options', 'plugins').then(function (vars) {
+    let { resources, openedFile, options, plugins } = vars;
+    if (options.environment) options.environment.plugins = plugins;
+    else {
+        options.environment = {
+            plugins: plugins
+        };
+
+    }
+    setTimeout(function(e) { console.log(options) }, 699);
     Photopea.initEmbed(document.querySelector("#outerWrap"), JSON.stringify(options)).then(async function (frame) {
         for (var resource of resources) await Photopea.addBinaryAsset(resource);
         if (openedFile) await Photopea.addBinaryAsset(openedFile);

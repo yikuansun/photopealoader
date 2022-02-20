@@ -27,14 +27,6 @@ window.addEventListener('DOMContentLoaded', async () => {
             titlebar.updateBackground(customTitlebar.Color.fromHex(themecolor));
             document.querySelector("#loadingscreen").style.backgroundColor = themecolor;
         }
-        let plugins = await ipcRenderer.invoke('getGlobal', "plugins");
-        if (options.environment) options.environment.plugins = plugins;
-        else {
-            options.environment = {
-                plugins: plugins
-            };
-
-        }
     }
 
     ipcRenderer.invoke('setGlobal', 'options', options);
