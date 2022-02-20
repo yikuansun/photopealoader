@@ -1,5 +1,6 @@
 const ipcRenderer = require('electron').ipcRenderer;
-const { contextBridge } = require('electron')
+const { contextBridge } = require('electron');
+const path = require('path');
 
 contextBridge.exposeInMainWorld('ppapi', {
     getGlobal: async (...theArgs) => { return await ipcRenderer.invoke('getGlobal', ...theArgs); }
@@ -8,15 +9,15 @@ contextBridge.exposeInMainWorld('ppapi', {
 window.addEventListener('DOMContentLoaded', async () => {
     const customTitlebar = require("custom-electron-titlebar");
 
-    var titlebar = new customTitlebar.Titlebar({
+    let titlebar = new customTitlebar.Titlebar({
         backgroundColor: customTitlebar.Color.fromHex("#474747"),
-        menu: null,
-        onMinimize: () => ipcRenderer.invoke('customTBar', 'minimize'),
-        onMaximize: () => ipcRenderer.invoke('customTBar', 'maximize'),
+        // itemBackgroundColor: Color.fromHex("#121212"),
+        // svgColor: Color.WHITE,
+        icon: path.join(__dirname, '/build/', '/icon.png'),
+        menu: null, // = do not automatically use Menu.applicationMenu
+        onMenuItemClick: function () { console.log("nothing"); },
         onClose: () => ipcRenderer.invoke('customTBar', 'close'),
-        isMaximized: () => ipcRenderer.invoke('customTBar', 'is-maximized'),
-        onMenuItemClick: function () { console.log("nothing"); }
-    });
+      })
 
     let options = await ipcRenderer.invoke('getGlobal', "options");
 
@@ -37,4 +38,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
 
     ipcRenderer.invoke('setGlobal', 'options', options);
+    
+    ipcRenderer.on('app-close', _ => {
+        ipcRenderer.send('closed');
+  });
 });

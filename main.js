@@ -3,6 +3,9 @@ const fs = require('fs');
 const admZip = require('adm-zip');
 const ipcMain = require('electron').ipcMain;
 const isDev = process.env.APP_DEV ? (process.env.APP_DEV.trim() == 'true') : false;
+const { setupTitlebar, attachTitlebarToWindow } = require('custom-electron-titlebar/main');
+// setup the titlebar main process
+setupTitlebar();
 
 let globals = {};
 
@@ -32,7 +35,8 @@ function getUserData() {
     }
   }
 
-  if (process.argv.length >= 2) {
+  if (process.argv.length > 2) {
+    // console.log(process.argv)
     var filePath = process.argv[isDev ? 2 : 1];
     fs.readFile(filePath, null, function (err, data) {
       if (err) console.log(err);
@@ -42,7 +46,7 @@ function getUserData() {
 }
 
 function createWindow() {
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1200,
     height: 900,
     titleBarStyle: "hidden",
@@ -51,7 +55,7 @@ function createWindow() {
       //   nodeIntegration: true,
       // contextIsolation: false,
       // enableRemoteModule: true,
-      preload: `${__dirname}/preload.js`,
+      preload: `${__dirname}/preload.js`
     }
   });
 
@@ -59,12 +63,16 @@ function createWindow() {
   mainWindow.loadFile('window/index.html');
   mainWindow.maximize();
   mainWindow.webContents.on('new-window', function (e, url) {
+    console.log('new window');
     e.preventDefault();
     require('electron').shell.openExternal(url);
   });
   nativeTheme.themeSource = 'dark';
 
   isDev && mainWindow.webContents.openDevTools();
+
+    //attach fullscreen(f11 and not 'maximized') && focus listeners
+    attachTitlebarToWindow(mainWindow);
 }
 
 function setMenu() {
@@ -111,7 +119,7 @@ app.whenReady().then(() => {
   setMenu();
 });
 
-app.on('window-all-closed', function () { app.quit() });
+// app.on('window-all-closed', function () { app.exit() });
 
 
 //No more remote....
@@ -133,13 +141,13 @@ ipcMain.handle('setGlobal', async (event, key, value) => {
 
 ipcMain.handle('customTBar', function (event, command) {
   switch (command) {
-    case 'minimize':
-      BrowserWindow.fromWebContents(event.sender).minimize();
-      break;
-    case 'maximize':
-      const window = BrowserWindow.fromWebContents(event.sender);
-      window.isMaximized() ? window.unmaximize() : window.maximize();
-      break;
+    // case 'minimize':
+    //   BrowserWindow.fromWebContents(event.sender).minimize();
+    //   break;
+    // case 'maximize':
+    //   const window = BrowserWindow.fromWebContents(event.sender);
+    //   window.isMaximized() ? window.unmaximize() : window.maximize();
+    //   break;
     case 'close':
       var choice = dialog.showMessageBoxSync(BrowserWindow.getFocusedWindow(), {
         type: "question",
@@ -149,9 +157,9 @@ ipcMain.handle('customTBar', function (event, command) {
       });
       if (choice == 0) app.exit();
       break;
-    case 'is-maximized':
-      return BrowserWindow.fromWebContents(event.sender).isMaximized()
-      break;
+    // case 'is-maximized':
+    //   return BrowserWindow.fromWebContents(event.sender).isMaximized()
+    //   break;
     default:
       console.log("Unknown customTBar command", command);
   }

@@ -10,6 +10,7 @@
   "main": "main.js",
   "scripts": {
     "start": "set APP_DEV=true && electron . test.jpg",
+    "startsimple": "set APP_DEV=true && electron .",
     "pack": "electron-builder --dir",
     "dist": "electron-builder"
   },
@@ -18,8 +19,8 @@
     "electron-builder": "^22.14.5"
   },
   "dependencies": {
-    "adm-zip": "^0.5.5",
-    "custom-electron-titlebar": "^4.1.0"
+    "custom-electron-titlebar": "github:AlexTorresSk/custom-electron-titlebar#develop",
+    "adm-zip": "^0.5.5"
   },
   "build": {
     "appId": "com.electron.photopealoader"
