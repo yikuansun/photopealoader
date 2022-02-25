@@ -4,6 +4,7 @@ const admZip = require('adm-zip');
 const ipcMain = require('electron').ipcMain;
 const isDev = process.env.APP_DEV ? (process.env.APP_DEV.trim() == 'true') : false;
 const { setupTitlebar, attachTitlebarToWindow } = require('custom-electron-titlebar/main');
+const path = require('path');
 // setup the titlebar main process
 setupTitlebar();
 
@@ -11,6 +12,7 @@ let globals = {};
 
 app.on('open-file', function (event, filePath) {
   globals.openedFile = fs.readFileSync(filePath).buffer;
+  globals.openedFilePath = path.join(__dirname, filePath);
 });
 
 function getUserData() {
@@ -26,21 +28,31 @@ function getUserData() {
     var fileext = resource.split('.').pop();
     if (!(['md', 'DS_Store'].includes(fileext))) globals.resources.push(fs.readFileSync(`${app.getPath('documents')}/Photopea files/Resources/${resource}`).buffer);
   }
-
-  globals.plugins = [];
+  if (globals.options.environment) globals.options.environment.plugins = [];
+  else {
+    globals.options.environment = {
+      plugins: []
+    };
+  };
+  // globals.otions.plugins = [];
   for (var file of fs.readdirSync(`${app.getPath('documents')}/Photopea files/Plugins`)) {
     var fileext = file.split('.').pop();
     if (fileext.toLowerCase() == "json") {
-      globals.plugins.push(JSON.parse(fs.readFileSync(`${app.getPath('documents')}/Photopea files/Plugins/${file}`, 'utf-8')));
+      globals.options.environment.plugins.push(JSON.parse(fs.readFileSync(`${app.getPath('documents')}/Photopea files/Plugins/${file}`, 'utf-8')));
     }
   }
 
+  globals.options.enableIO = true;
+  
   if (process.argv.length > 2) {
     // console.log(process.argv)
     var filePath = process.argv[isDev ? 2 : 1];
     fs.readFile(filePath, null, function (err, data) {
       if (err) console.log(err);
-      if (data) globals.openedFile = data.buffer;
+      if (data) {
+        globals.openedFile = data.buffer;
+        globals.openedFilePath = path.join(__dirname, filePath);
+      };
     });
   }
 }
@@ -71,8 +83,8 @@ function createWindow() {
 
   isDev && mainWindow.webContents.openDevTools();
 
-    //attach fullscreen(f11 and not 'maximized') && focus listeners
-    attachTitlebarToWindow(mainWindow);
+  //attach fullscreen(f11 and not 'maximized') && focus listeners
+  attachTitlebarToWindow(mainWindow);
 }
 
 function setMenu() {
@@ -121,8 +133,44 @@ app.whenReady().then(() => {
 
 // app.on('window-all-closed', function () { app.exit() });
 
-
 //No more remote....
+
+/// This should be part of potopea.js api files as thats whats expecting it.
+ipcMain.handle('openDialog', async (event, options) => {
+  let response = await dialog.showOpenDialog(options);
+  if (!response.canceled) {
+    return response.filePaths[0];
+  } else {
+    console.log("no file selected");
+    return;
+  };
+});
+
+ipcMain.handle('saveDialog', async (event, options) => {
+  let response = await dialog.showSaveDialog(options);
+  if (!response.canceled) {
+    return response.filePath;
+  } else {
+    console.log("no file selected");
+    return;
+  };
+});
+
+ipcMain.handle('openFile', async (event, options) => {
+  let response = await dialog.showOpenDialog(options);
+  if (!response.canceled) {
+    let file = fs.readFileSync(response.filePaths[0]).buffer;
+    return { file: file, path: response.filePaths[0] };
+  } else {
+    console.log("no file selected");
+    return;
+  }
+});
+
+ipcMain.handle('saveFile', async (event, path, file) => {
+  fs.writeFileSync(path, Buffer.from(file));
+  return true;
+});
 
 ipcMain.handle('getGlobal', async (event, ...theArgs) => {
   if (theArgs.length > 1) {
@@ -136,8 +184,10 @@ ipcMain.handle('getGlobal', async (event, ...theArgs) => {
 })
 
 ipcMain.handle('setGlobal', async (event, key, value) => {
-  globals[key]=value;
-})
+  globals[key] = value;
+});
+///
+
 
 ipcMain.handle('customTBar', function (event, command) {
   switch (command) {

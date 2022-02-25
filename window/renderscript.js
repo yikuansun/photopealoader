@@ -1,24 +1,19 @@
-window.ppapi.getGlobal('resources', 'openedFile', 'options', 'plugins').then(function (vars) {
-    let { resources, openedFile, options, plugins } = vars;
-    if (options.environment) options.environment.plugins = plugins;
-    else {
-        options.environment = {
-            plugins: plugins
-        };
-
-    }
-    setTimeout(function(e) { console.log(options) }, 699);
-    Photopea.initEmbed(document.querySelector("#outerWrap"), JSON.stringify(options)).then(async function (frame) {
+window.ppapi.getGlobal('resources', 'openedFile', 'openedFilePath', 'options').then(function (vars) {
+    let { resources, openedFile, openedFilePath, options } = vars;
+    Photopea.initEmbed(document.querySelector("#outerWrap"), options).then(async function (frame) {
         for (var resource of resources) await Photopea.addBinaryAsset(resource);
-        if (openedFile) await Photopea.addBinaryAsset(openedFile);
+        if (openedFile) await Photopea.addImage(openedFile, openedFilePath);
         document.querySelector("#loadingscreen").remove();
-        // test script
+        // tests
         // Photopea.message.all(function(d){
         //     console.log("all",d)
         // })
-        // Photopea.runScript('app.echoToOE("Hello");').then(function (result) {
-        //     console.log('Script reults',result);
-        // })
+        // Photopea.runScript(function () {
+        //     // app.echoToOE("Hello");
+        //     app.activeDocument.saveToOE("psd");
+        //     app.echoToOE(app.activeDocument.source);
+        // }).then(function (result) {
+        //     console.log('Script result', result);
+        // });
     });
 });
-
