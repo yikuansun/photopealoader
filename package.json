@@ -7,10 +7,14 @@
     "name": "Yikuan Sun",
     "url": "https://yikuansun.github.io"
   },
+  "contributors": [
+    { "name": "PAEz" }
+  ],
   "main": "main.js",
   "scripts": {
     "start": "set APP_DEV=true && electron . test.jpg",
     "startsimple": "set APP_DEV=true && electron .",
+    "starttest": "electron .",
     "pack": "electron-builder --dir",
     "dist": "electron-builder"
   },
