@@ -20,7 +20,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         backgroundColor: customTitlebar.Color.fromHex("#474747"),
         // itemBackgroundColor: Color.fromHex("#121212"),
         // svgColor: Color.WHITE,
-        icon: path.join(__dirname, '/build/', '/icon.png'),
+        icon: path.join(__dirname, 'window', 'photopea_logo_plain.png'),
         menu: null, // = do not automatically use Menu.applicationMenu
         onMenuItemClick: function () { console.log("nothing"); },
         onClose: () => ipcRenderer.invoke('customTBar', 'close'),

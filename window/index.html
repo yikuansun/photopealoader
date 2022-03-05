@@ -2,9 +2,18 @@
 <html>
     <head>
         <title>Photopea</title>
+        <style>
+            @keyframes loadingAnimation {
+                0% { transform: rotate(0); }
+                69% { transform: rotate(0); }
+                100% { transform: rotate(360deg); }
+            }
+        </style>
     </head>
     <body style="margin: 0; width: 100vw; height: 100vh; font-family: 'Open Sans', Sans-Serif;">  
-        <table id="loadingscreen" style="z-index: 9;position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #474747; user-select: none; color: white; font-family: 'Open Sans', Sans-Serif;"><tr><td><center>updating...</center></td></tr></table>
+        <table id="loadingscreen" style="z-index: 9;position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #474747; user-select: none; color: white; font-family: 'Open Sans', Sans-Serif;">
+            <tr><td><center><img src="photopea_logo_plain.png" draggable="false" width="123" style="animation: loadingAnimation 3s infinite;" /></center></td></tr>
+        </table>
         <div id="outerWrap" style="width: 100%; height: 100%;"></div>
         <script src="lib/photopea.js"></script>
         <script src="renderscript.js"></script>
