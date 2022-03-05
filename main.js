@@ -1,6 +1,5 @@
 const { app, BrowserWindow, nativeTheme, Menu, shell, dialog } = require('electron');
 const fs = require('fs');
-const admZip = require('adm-zip');
 const ipcMain = require('electron').ipcMain;
 const isDev = process.env.APP_DEV ? (process.env.APP_DEV.trim() == 'true') : false;
 const { setupTitlebar, attachTitlebarToWindow } = require('custom-electron-titlebar/main');
@@ -16,9 +15,10 @@ app.on('open-file', function (event, filePath) {
 });
 
 function getUserData() {
-  var zip = new admZip();
-  zip.addLocalFolder(__dirname + '/defaultfs');
-  zip.extractAllTo(app.getPath('documents') + '/Photopea files', false);
+  if (!fs.existsSync(app.getPath('documents') + '/Photopea files')) fs.mkdirSync(app.getPath('documents') + '/Photopea files');
+  if (!fs.existsSync(app.getPath('documents') + '/Photopea files/Plugins')) fs.mkdirSync(app.getPath('documents') + '/Photopea files/Plugins');
+  if (!fs.existsSync(app.getPath('documents') + '/Photopea files/Resources')) fs.mkdirSync(app.getPath('documents') + '/Photopea files/Resources');
+  if (!fs.existsSync(app.getPath('documents') + '/Photopea files/config.json')) fs.writeFileSync(app.getPath('documents') + '/Photopea files/config.json', "{\n    \n}");
 
   var jsonconfig = fs.readFileSync(`${app.getPath('documents')}/Photopea files/config.json`, 'utf-8');
   globals.options = JSON.parse(jsonconfig);

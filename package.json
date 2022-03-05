@@ -8,7 +8,9 @@
     "url": "https://yikuansun.github.io"
   },
   "contributors": [
-    { "name": "PAEz" }
+    {
+      "name": "PAEz"
+    }
   ],
   "main": "main.js",
   "scripts": {
@@ -23,8 +25,7 @@
     "electron-builder": "^22.14.5"
   },
   "dependencies": {
-    "custom-electron-titlebar": "github:AlexTorresSk/custom-electron-titlebar#develop",
-    "adm-zip": "^0.5.5"
+    "custom-electron-titlebar": "github:AlexTorresSk/custom-electron-titlebar#develop"
   },
   "build": {
     "appId": "com.electron.photopealoader"
