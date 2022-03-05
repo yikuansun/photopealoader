@@ -44,7 +44,7 @@ function getUserData() {
 
   globals.options.enableIO = true;
   
-  if (process.argv.length > 2) {
+  if (process.argv.length >= 2) {
     // console.log(process.argv)
     var filePath = process.argv[isDev ? 2 : 1];
     fs.readFile(filePath, null, function (err, data) {
