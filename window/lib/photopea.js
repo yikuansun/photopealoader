@@ -63,14 +63,17 @@ let Photopea = (function () {
 
     var io = {
         imageDialogFilters: [
-            { name: 'Images', extensions: ['jpg', 'png', 'gif', 'psd', 'pdf', 'webp', 'svg', 'bmp'] }
+            { name: 'Images', extensions: ['jpg', 'png', 'gif', 'psd', 'pdf', 'webp', 'svg', 'bmp'] },
+            {name : 'All', extensions:['*']}
         ],
         open: function () {
             let options = { properties: ['openFile'], title: "Open image", buttonLabel: "Open", filters: io.imageDialogFilters };
             var myPromise = new Promise(function (resolve, reject) {
                 ppapi.openFile(options).then(function (result) {
                     if (result?.file) {
-                        Photopea.addImage(result.file, result.path);
+                        var ext = result.path.split('.').pop();
+                        if (_io.imageFormats.hasOwnProperty(ext)) Photopea.addImage(result.file, result.path);
+                        else Photopea.addBinaryAsset(result.file);
                     };
                 });
             });
@@ -226,4 +229,4 @@ let Photopea = (function () {
         message: message,
     };
     return Photopea;
-})()
+})();
