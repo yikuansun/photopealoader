@@ -72,7 +72,7 @@ function createWindow() {
     }
   });
 
-  mainWindow.once("ready-to-show", function() {
+  ipcMain.handle("readyToShow", function(e, data) {
     mainWindow.show();
   });
   mainWindow.setMenuBarVisibility(false);

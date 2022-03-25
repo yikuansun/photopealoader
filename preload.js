@@ -10,6 +10,7 @@ contextBridge.exposeInMainWorld('ppapi', {
     saveDialog: async (...theArgs) => { return await ipcRenderer.invoke('saveDialog', ...theArgs); },
     openFile: async (...theArgs) => { return await ipcRenderer.invoke('openFile', ...theArgs); },
     saveFile: async (...theArgs) => { return await ipcRenderer.invoke('saveFile', ...theArgs); },
+    sendReady: async (...theArgs) => { await ipcRenderer.invoke("readyToShow", ...theArgs); },
 });
 ///
 
