@@ -58,8 +58,7 @@ function getUserData() {
 }
 
 function createWindow() {
-  var mainWindow = new BrowserWindow({
-    show: false,
+  mainWindow = new BrowserWindow({
     width: 1200,
     height: 900,
     titleBarStyle: "hidden",
@@ -72,9 +71,6 @@ function createWindow() {
     }
   });
 
-  mainWindow.once("ready-to-show", function() {
-    mainWindow.show();
-  });
   mainWindow.setMenuBarVisibility(false);
   mainWindow.loadFile('window/index.html');
   mainWindow.maximize();
