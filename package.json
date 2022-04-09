@@ -9,7 +9,8 @@
   },
   "contributors": [
     {
-      "name": "PAEz"
+      "name": "PAEz",
+      "url": "https://github.com/PAEz"
     }
   ],
   "main": "main.js",
